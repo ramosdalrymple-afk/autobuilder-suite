@@ -1,0 +1,45 @@
+# version: '3.8'
+
+services:
+  # SERVICE 1: The SQL Database (PostgreSQL)
+  postgres:
+    image: postgres:15-alpine
+    container_name: autobuilder_db
+    restart: always
+    environment:
+      POSTGRES_USER: webstudio
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: webstudio
+    ports:
+      - "5435:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U webstudio -d webstudio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # SERVICE 2: PostgREST API Layer
+  postgrest:
+    image: postgrest/postgrest:latest
+    container_name: autobuilder_postgrest
+    restart: always
+    environment:
+      PGRST_DB_URI: "postgresql://webstudio:password@postgres:5432/webstudio"
+      PGRST_DB_SCHEMA: "public"
+      PGRST_DB_ANON_ROLE: "anon"
+      PGRST_JWT_SECRET: "jwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecretjwtsecret"
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:

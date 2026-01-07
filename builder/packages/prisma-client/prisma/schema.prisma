@@ -1,0 +1,218 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/__generated__"
+  previewFeatures = ["views"]
+  binaryTargets   = [env("PRISMA_BINARY_TARGET")]
+}
+
+datasource db {
+  provider  = "postgres"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Team {
+  id    String @id @default(uuid())
+  users User[]
+}
+
+model File {
+  name              String       @id
+  format            String
+  size              Int
+  description       String?
+  createdAt         DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
+  meta              String       @default("{}")
+  status            UploadStatus @default(UPLOADING)
+  isDeleted         Boolean      @default(false)
+  uploaderProjectId String?
+  assets            Asset[]
+  uploaderProject   Project?     @relation(fields: [uploaderProjectId], references: [id])
+}
+
+model Asset {
+  id          String   @default(uuid())
+  projectId   String
+  name        String
+  filename    String?
+  description String?
+  file        File     @relation(fields: [name], references: [name])
+  Project     Project?
+
+  @@id([id, projectId])
+}
+
+model User {
+  id               String             @id @default(uuid())
+  email            String?            @unique
+  provider         String?
+  image            String?
+  username         String?
+  createdAt        DateTime           @default(now()) @db.Timestamptz(3)
+  teamId           String?
+  projectsTags     Json               @default("[]")
+  clientReferences ClientReferences[]
+  projects         Project[]
+  checkout         TransactionLog[]
+  team             Team?              @relation(fields: [teamId], references: [id])
+}
+
+model ClientReferences {
+  reference String
+  service   String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@id([userId, service])
+  @@unique([reference, service])
+}
+
+model Product {
+  id          String           @id
+  name        String
+  description String?
+  features    String[]
+  images      String[]
+  meta        Json
+  createdAt   DateTime         @default(now()) @db.Timestamptz(3)
+  checkout    TransactionLog[]
+}
+
+model TransactionLog {
+  eventId        String   @id
+  userId         String?
+  productId      String?
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  eventData      Json?
+  eventType      String?
+  eventCreated   Int?
+  status         String?
+  customerId     String?
+  customerEmail  String?
+  subscriptionId String?
+  paymentIntent  String?
+  product        Product? @relation(fields: [productId], references: [id])
+  user           User?    @relation(fields: [userId], references: [id])
+
+  @@unique([eventId, productId])
+}
+
+model Project {
+  id                        String                    @id @default(uuid())
+  createdAt                 DateTime                  @default(now()) @db.Timestamptz(3)
+  title                     String
+  tags                      String[]
+  domain                    String                    @unique
+  userId                    String?
+  isDeleted                 Boolean                   @default(false)
+  previewImageAssetId       String?
+  marketplaceApprovalStatus MarketplaceApprovalStatus @default(UNLISTED)
+  authorizationToken        AuthorizationToken[]
+  build                     Build[]
+  files                     File[]
+  previewImageAsset         Asset?                    @relation(fields: [previewImageAssetId, id], references: [id, projectId])
+  user                      User?                     @relation(fields: [userId], references: [id])
+  projectDomain             ProjectDomain[]
+
+  @@unique([id, isDeleted])
+  @@unique([domain, isDeleted])
+  @@unique([id, domain])
+  @@unique([previewImageAssetId, id])
+  @@index([isDeleted, marketplaceApprovalStatus])
+}
+
+model Build {
+  id                    String        @unique @default(uuid())
+  version               Int           @default(0)
+  lastTransactionId     String?
+  createdAt             DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime      @default(now()) @updatedAt @db.Timestamptz(3)
+  pages                 String
+  projectId             String
+  breakpoints           String        @default("[]")
+  styles                String        @default("[]")
+  styleSources          String        @default("[]")
+  styleSourceSelections String        @default("[]")
+  props                 String        @default("[]")
+  dataSources           String        @default("[]")
+  resources             String        @default("[]")
+  instances             String        @default("[]")
+  marketplaceProduct    String        @default("{}")
+  deployment            String?
+  publishStatus         PublishStatus @default(PENDING)
+  project               Project       @relation(fields: [projectId], references: [id])
+
+  @@id([id, projectId])
+  @@index([projectId, createdAt(sort: Desc)])
+}
+
+model AuthorizationToken {
+  token     String                @unique @default(uuid())
+  projectId String
+  name      String                @default("")
+  relation  AuthorizationRelation @default(viewers)
+  createdAt DateTime              @default(now()) @db.Timestamptz(3)
+  canClone  Boolean               @default(true)
+  canCopy   Boolean               @default(true)
+  project   Project               @relation(fields: [projectId], references: [id])
+
+  @@id([token, projectId])
+}
+
+model Domain {
+  id            String          @id @default(uuid())
+  domain        String          @unique
+  createdAt     DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime        @default(now()) @updatedAt @db.Timestamptz(3)
+  txtRecord     String?
+  status        DomainStatus    @default(INITIALIZING)
+  error         String?
+  ProjectDomain ProjectDomain[]
+}
+
+model ProjectDomain {
+  projectId String
+  domainId  String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  txtRecord String   @unique @default(uuid())
+  cname     String
+  domain    Domain   @relation(fields: [domainId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id])
+
+  @@id([projectId, domainId])
+  @@index([domainId])
+}
+
+enum UploadStatus {
+  UPLOADING
+  UPLOADED
+}
+
+enum PublishStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+}
+
+enum MarketplaceApprovalStatus {
+  UNLISTED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum AuthorizationRelation {
+  viewers
+  editors
+  builders
+  administrators
+}
+
+enum DomainStatus {
+  INITIALIZING
+  ACTIVE
+  ERROR
+  PENDING
+}
