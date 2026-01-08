@@ -13,7 +13,7 @@ import {
   Link,
   buttonStyle,
 } from "@webstudio-is/design-system";
-import { BodyIcon, ExtensionIcon } from "@webstudio-is/icons";
+import { BodyIcon, ExtensionIcon, PluginIcon } from "@webstudio-is/icons";
 import { NavLink, useLocation, useRevalidator } from "@remix-run/react";
 import { atom } from "nanostores";
 import { useStore } from "@nanostores/react";
@@ -23,6 +23,7 @@ import { CollapsibleSection } from "~/builder/shared/collapsible-section";
 import { ProfileMenu } from "./profile-menu";
 import { Projects } from "./projects/projects";
 import { Templates } from "./templates/templates";
+import { ResourcesPage } from "./resources/resources-page";
 import { Header } from "./shared/layout";
 import { help } from "~/shared/help";
 import { SearchResults } from "./search/search-results";
@@ -142,6 +143,10 @@ const getView = (pathname: string, hasProjects: boolean) => {
     return "welcome";
   }
 
+  if (pathname === dashboardPath("resources")) {
+    return "resources";
+  }
+
   if (pathname === dashboardPath("templates")) {
     return "templates";
   }
@@ -214,6 +219,11 @@ export const Dashboard = () => {
                           children: "Projects",
                         },
                         {
+                          to: dashboardPath("resources"),
+                          prefix: <PluginIcon />,
+                          children: "Resources",
+                        },
+                        {
                           to: dashboardPath("templates"),
                           prefix: <ExtensionIcon />,
                           children: "Starter templates",
@@ -260,6 +270,7 @@ export const Dashboard = () => {
             projectsTags={user.projectsTags}
           />
         )}
+        {view === "resources" && <ResourcesPage />}
         {view === "templates" && <Templates projects={templates} />}
         {view === "welcome" && <Templates projects={templates} welcome />}
         {view === "search" && <SearchResults {...data} />}

@@ -15,6 +15,7 @@ import {
   NavigatorIcon,
   PageIcon,
   PlusIcon,
+  PluginIcon,
   type IconComponent,
 } from "@webstudio-is/icons";
 import { HelpCenter } from "../features/help/help-center";
@@ -44,6 +45,7 @@ import { PagesPanel } from "~/builder/features/pages";
 import { NavigatorPanel } from "~/builder/features/navigator";
 import { AssetsPanel } from "~/builder/features/assets";
 import { MarketplacePanel } from "~/builder/features/marketplace";
+import { ResourcesPanel } from "~/builder/features/resources";
 import type { SidebarPanelName } from "./types";
 
 const none = { Panel: () => null };
@@ -144,6 +146,15 @@ const panels: PanelConfig[] = [
     label: "Marketplace",
     Icon: ExtensionIcon,
     Panel: MarketplacePanel,
+    visibility: {
+      content: false,
+    },
+  },
+  {
+    name: "resources",
+    label: "Resources",
+    Icon: PluginIcon,
+    Panel: ResourcesPanel,
     visibility: {
       content: false,
     },

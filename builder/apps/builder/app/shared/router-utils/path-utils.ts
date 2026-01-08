@@ -65,7 +65,7 @@ export const builderUrl = (props: {
 };
 
 export const dashboardPath = (
-  view: "templates" | "search" | "projects" = "projects"
+  view: "templates" | "search" | "projects" | "resources" = "projects"
 ) => {
   if (view === "projects") {
     return `/dashboard`;

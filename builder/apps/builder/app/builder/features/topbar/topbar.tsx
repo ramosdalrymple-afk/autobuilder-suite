@@ -11,6 +11,7 @@ import {
   Tooltip,
   Kbd,
 } from "@webstudio-is/design-system";
+import { PluginIcon } from "@webstudio-is/icons";
 import type { Project } from "@webstudio-is/project";
 import { $pages } from "~/shared/sync/data-stores";
 import { $editingPageId } from "~/shared/nano-states";
@@ -111,6 +112,14 @@ export const Topbar = ({ project, hasProPlan, css, loading }: TopbarProps) => {
           <SyncStatus />
 
           <BuilderModeDropDown />
+          <Tooltip content="Resources">
+            <ToolbarButton
+              aria-label="Toggle Resources"
+              onClick={() => toggleActiveSidebarPanel("resources")}
+            >
+              <PluginIcon />
+            </ToolbarButton>
+          </Tooltip>
           <ShareButton projectId={project.id} hasProPlan={hasProPlan} />
           <PublishButton projectId={project.id} />
           <CloneButton />

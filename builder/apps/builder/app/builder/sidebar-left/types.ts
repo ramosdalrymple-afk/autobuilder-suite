@@ -4,6 +4,7 @@ export const sidebarPanelNames = [
   "navigator",
   "pages",
   "marketplace",
+  "resources",
 ] as const;
 
 export type SidebarPanelName = (typeof sidebarPanelNames)[number] | "none";

@@ -1,0 +1,84 @@
+
+> autobuilder-suite@1.0.0 start
+> concurrently -k -n "DOCKER,CMS,BUILDER" -c "blue,magenta,green" "cd builder && docker-compose up" "cd cms && npm run develop" "cd builder && pnpm --filter @webstudio-is/builder dev"
+
+[DOCKER] time="2026-01-08T14:22:55+08:00" level=warning msg="Found orphan containers ([builder-db-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+[DOCKER]  Container autobuilder_db  Running
+[DOCKER] Attaching to autobuilder_db, autobuilder_postgrest
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Starting PostgREST 14.3...
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: API server listening on 0.0.0.0:3000
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Listening for database notifications on the "pgrst" channel
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Successfully connected to PostgreSQL 15.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Connection Pool initialized with a maximum size of 10 connections
+[CMS] 
+[CMS] > cms@0.1.0 develop
+[CMS] > strapi develop
+[CMS] 
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Config reloaded
+[BUILDER] packages/cli                             | ΓÇëWARNΓÇë Unsupported engine: wanted: {"node":">=20.12"} (current: {"node":"v20.10.0","pnpm":"9.14.4"})
+[BUILDER] 
+[BUILDER] > @webstudio-is/builder@0.0.0 dev C:\Users\ddal6\HOLY IT PROJECTS\autobuilder-suite\autobuilder-suite\builder\apps\builder
+[BUILDER] > pnpm build:http-client && remix vite:dev
+[BUILDER] 
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Schema cache queried in 393.5 milliseconds
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Schema cache loaded 21 Relations, 19 Relationships, 14 Functions, 0 Domain Representations, 4 Media Type Handlers, 599 Timezones
+[DOCKER] autobuilder_postgrest  | 08/Jan/2026:06:22:56 +0000: Schema cache loaded in 10.2 milliseconds
+[BUILDER] 
+[BUILDER] > @webstudio-is/builder@0.0.0 build:http-client C:\Users\ddal6\HOLY IT PROJECTS\autobuilder-suite\autobuilder-suite\builder\apps\builder
+[BUILDER] > pnpm --filter=@webstudio-is/http-client build
+[BUILDER] 
+[BUILDER] ../../packages/cli                       | ΓÇëWARNΓÇë Unsupported engine: wanted: {"node":">=20.12"} (current: {"node":"v20.10.0","pnpm":"9.14.4"})
+[BUILDER] 
+[BUILDER] > @webstudio-is/http-client@0.0.0-webstudio-version build C:\Users\ddal6\HOLY IT PROJECTS\autobuilder-suite\autobuilder-suite\builder\packages\http-client
+[BUILDER] > node -e "const fs=require('fs'); fs.rmSync('lib', {recursive: true, force: true})" && esbuild src/index.ts --outdir=lib --bundle --format=esm --packages=external
+[BUILDER] 
+[BUILDER] 
+[BUILDER]   lib\index.js  2.4kb
+[BUILDER] 
+[BUILDER] Done in 17ms
+[CMS] - Cleaning dist dir C:/Users/ddal6/HOLY IT PROJECTS/autobuilder-suite/autobuilder-suite/cms/dist
+[CMS] Γ£ö Cleaning dist dir (14ms)
+[BUILDER]   [32mΓ₧£[39m  [1mLocal[22m:   [36mhttps://vite.wstd.dev:[1m5173[22m/[39m
+[BUILDER]   [32mΓ₧£[39m  [1mNetwork[22m: [36mhttps://wstd.dev:[1m5173[22m/[39m
+[CMS] - Loading Strapi
+[CMS] [2026-01-08 14:23:15.178] [33mwarn[39m: admin.auth.options.expiresIn is deprecated and will be removed in Strapi 6. Please configure admin.auth.sessions.maxRefreshTokenLifespan and admin.auth.sessions.maxSessionLifespan.
+[CMS] - Building build context
+[CMS] 
+[CMS] [INFO] Including the following ENV variables as part of the JS bundle:
+[CMS]     - ADMIN_PATH
+[CMS]     - STRAPI_ADMIN_BACKEND_URL
+[CMS]     - STRAPI_TELEMETRY_DISABLED
+[CMS]     - STRAPI_AI_URL
+[CMS]     - STRAPI_ANALYTICS_URL
+[CMS] Γ£ö Building build context (302ms)
+[CMS] - Creating admin
+[CMS] Γ£ö Creating admin (5319ms)
+[CMS] Γ£ö Loading Strapi (8832ms)
+[CMS] - Generating types
+[CMS] Γ£ö Generating types (376ms)
+[CMS] - Compiling TS
+[CMS] - Cleaning dist dir C:/Users/ddal6/HOLY IT PROJECTS/autobuilder-suite/autobuilder-suite/cms/dist
+[CMS] Γ£ö Cleaning dist dir (35ms)
+[CMS] Γ£ö Compiling TS (4076ms)
+[CMS] 
+[CMS]  Project information
+[CMS] 
+[CMS] [90mΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ[39m[90mΓö¼ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ[39m
+[CMS] [90mΓöé[39m Time               [90mΓöé[39m Thu Jan 08 2026 14:23:25 GMT+0800 (Philippine S... [90mΓöé[39m
+[CMS] [90mΓöé[39m Launched in        [90mΓöé[39m 13300 ms                                         [90mΓöé[39m
+[CMS] [90mΓöé[39m Environment        [90mΓöé[39m development                                      [90mΓöé[39m
+[CMS] [90mΓöé[39m Process PID        [90mΓöé[39m 10568                                            [90mΓöé[39m
+[CMS] [90mΓöé[39m Version            [90mΓöé[39m 5.33.1 (node v20.10.0)                           [90mΓöé[39m
+[CMS] [90mΓöé[39m Edition            [90mΓöé[39m Enterprise                                       [90mΓöé[39m
+[CMS] [90mΓöé[39m Database           [90mΓöé[39m sqlite                                           [90mΓöé[39m
+[CMS] [90mΓöé[39m Database name      [90mΓöé[39m .tmp\data.db                                     [90mΓöé[39m
+[CMS] [90mΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ[39m[90mΓö┤ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ[39m
+[CMS] 
+[CMS]  Actions available
+[CMS] 
+[CMS] Welcome back!
+[CMS] To access the server ΓÜí∩╕Å, go to:
+[CMS] http://localhost:1337
+[CMS] 
+[CMS] [2026-01-08 14:23:25.500] [32minfo[39m: Strapi started successfully
+[CMS] [2026-01-08 14:23:56.474] [32minfo[39m: Shutting down Strapi
