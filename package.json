@@ -1,0 +1,16 @@
+{
+  "name": "autobuilder-suite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "concurrently -k -n \"DOCKER,CMS,BUILDER\" -c \"blue,magenta,green\" \"cd builder && docker-compose up\" \"cd cms && npm run develop\" \"cd builder && pnpm --filter @webstudio-is/builder dev\""
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
