@@ -42,7 +42,7 @@ export const action: ActionFunction = async ({ request }) => {
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`[Resource] Error: ${errorMessage}`);
-    return json(
+    return json(    
       { error: `Connection failed: ${errorMessage}` },
       { status: 500 }
     );
